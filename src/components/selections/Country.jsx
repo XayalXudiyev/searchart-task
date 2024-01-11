@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchCountry } from '../redux/features/countrySlice'
+import { fetchCountry } from '../../redux/features/countrySlice'
 
 const Country = () => {
 

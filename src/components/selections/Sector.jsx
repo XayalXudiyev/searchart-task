@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSectors, setSelectedSector } from '../redux/features/sectorSlice';
+import { fetchSectors, setSelectedSector } from '../../redux/features/sectorSlice';
 
 const Sector = () => {
     const dispatch = useDispatch();

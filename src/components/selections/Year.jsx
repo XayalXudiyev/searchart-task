@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchYears } from '../redux/features/yearSlice'
+import { fetchYears } from '../../redux/features/yearSlice'
 
 
 const Year = () => {
@@ -13,7 +13,6 @@ const Year = () => {
     }, [dispatch]);
 
     const years = useSelector((state) => state.years.years);
-    console.log(years)
 
     return (
         <div className="relative ">

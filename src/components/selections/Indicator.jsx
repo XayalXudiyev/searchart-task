@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchIndicators } from '../redux/features/indicatorSlice';
+import { fetchIndicators } from '../../redux/features/indicatorSlice';
 
 const Indicator = () => {
     const dispatch = useDispatch();
     const selectedSubsector = useSelector((state) => state.subsector.selectedSubsector);
-    const subsectors = useSelector((state) => state.subsector.subsectors);
+    // const subsectors = useSelector((state) => state.subsector.subsectors);
 
     useEffect(() => {
         if (selectedSubsector) {

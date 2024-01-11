@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSubsector, setSelectedSubsector } from '../redux/features/subsectorSlice';
+import { fetchSubsector, setSelectedSubsector } from '../../redux/features/subsectorSlice';
 
 const Subsector = () => {
     const dispatch = useDispatch();
