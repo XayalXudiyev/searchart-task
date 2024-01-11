@@ -25,6 +25,16 @@ select::-webkit-scrollbar {
   width: 0;
 }
 
+.content{
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 11 */
+}
+.content::-webkit-scrollbar {
+  width: 0;
+}
 .container {
   height: auto;
   display: flex;
