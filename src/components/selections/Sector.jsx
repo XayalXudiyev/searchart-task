@@ -1,4 +1,3 @@
-// Sector.jsx
 
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,10 +26,10 @@ const Sector = () => {
             <h1 className='text-[#A7B4CA] my-2'>Sector</h1>
             <select
                 className="w-full p-2.5 text-[#A7B4CA] bg-[#293F64] border border-[#4A628A]  shadow-sm outline-none appearance-none rounded-[7px]"
-                value={selectedSector} // Seçilen sektörü kontrol edilen bileşen olarak ayarla
+                value={selectedSector}
                 onChange={handleSectorChange}
             >
-                <option value="#">{}</option> 
+                <option value="#">{ }</option>
                 {sectors.map((sector) => (
                     <option key={sector} value={sector}>{sector}</option>
                 ))}

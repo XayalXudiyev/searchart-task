@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchYears } from '../../redux/features/yearSlice'
+
 
 const RankDifference = () => {
 
@@ -10,297 +13,137 @@ const RankDifference = () => {
     const [rankIndicator, setRankIndicator] = useState([])
     const [flag, setFlag] = useState([])
 
+    const years = useSelector((state) => state.years.years);
+    const selectedCountries = useSelector((state) => state.country.selectedCountries);
+    const selectedIndicator = useSelector((state) => state.indicators.selectedIndicator);
+    const [selectedFirstYear, setSelectedFirstYear] = useState('');
+    const [selectedEndYear, setSelectedEndYear] = useState('');
+
+    // useEffect(() => {
+    //     const fetchFlag = async () => {
+    //         try {
+    //             const res = await axios.get(`https://restcountries.com/v3.1/all?fields=name,flags`);
+    //             setFlag(res.data)
+    //         } catch (error) {
+    //             console.error("Error fetching data:", error);
+    //         }
+    //     };
+    //     fetchFlag();
+    // }, [flag])
+
+    const handleFirstYearChange = (e) => {
+        setSelectedFirstYear(e.target.value);
+    };
+
+    const handleEndYearChange = (e) => {
+        setSelectedEndYear(e.target.value);
+    }
+
+    const dispatch = useDispatch();
+
     useEffect(() => {
+        dispatch(fetchYears());
+    }, [dispatch]);
+
+    useEffect(() => {
+        const countryArrayParse = selectedCountries.length > 0 ? selectedCountries.join(';') : '';
+        const queryParams = [
+            countryArrayParse && `countries=${countryArrayParse}`,
+            selectedIndicator && `indicator=${selectedIndicator}`,
+            selectedFirstYear && `year1=${selectedFirstYear}`,
+            selectedEndYear && `year2=${selectedEndYear}`
+        ].filter(Boolean).join('&');
+
+
+        const apiUrl = `https://searchartback-production-dc78.up.railway.app/api/rank-diff/?${queryParams}`;
+
         const fetchRankIndicator = async () => {
             try {
-                const res = await axios.get(`https://searchartback-production-dc78.up.railway.app/api/rank-diff/?indicator=Gross%20Domestic%20Product%20billions%20of%20U.S.%20dollars&year1=2019&year2=2021&countries=Pakistan`);
+                const res = await axios.get(apiUrl);
                 setRankIndicator(res.data)
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
-        fetchRankIndicator();
-    }, []);
 
-    useEffect(() => {
-        const fetchFlag = async () => {
-            try {
-                const res = await axios.get(`https://restcountries.com/v3.1/all?fields=name,flags`);
-                setFlag(res.data)
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-        fetchFlag();
-    }, [flag])
+        if (queryParams && countryArrayParse && selectedIndicator && selectedFirstYear && selectedEndYear) {
+            fetchRankIndicator();
+        }
+    }, [selectedCountries, selectedIndicator, selectedFirstYear, selectedEndYear])
+
 
     const rankDifferences = rankIndicator.countries?.map((country) => country.rank_difference)
     const rank = rankIndicator.countries?.map((country, index) => (<span key={index}>{country.rank_difference}</span>))
-    const COUNTRYY = rankIndicator.countries?.map((country, index) => (<span>{country.country}</span>))
-
-    return (
-        <section className='w-2/6 mx-auto mt-8 text-white  rounded-md'>
-
-            <div className='h-[56px] bg-[#0D1F3D]'><p className='text-[#A7B4CA]'>Difference in rank between years</p></div>
-
-            <div className='bg-[#051124] p-2 '>
-                <div className="flex justify-between ">
-                    <select className="select-none text-center w-5/12 p-x-2.5 text-[#A7B4CA] bg-[#051124] border border-[#172E55] text-2xl shadow-sm outline-none appearance-none rounded-[7px] hover:bg-[#293F64]">
-                        <option value={rankIndicator.first_year}>{rankIndicator.first_year}</option>
-                    </select>
-
-                    <select className="select-none text-center w-5/12  p-x-2.5  text-[#A7B4CA] bg-[#051124] border border-[#172E55] text-2xl  shadow-sm outline-none appearance-none  rounded-[7px] hover:bg-[#293F64]">
-                        <option value={rankIndicator.second_year}>{rankIndicator.second_year}</option>
-                    </select>
-                </div>
-
-                <div className='h-[331px] flex justify-between mt-6 overflow-y-auto content'>
-                    <div className='content text-end w-2/5  '>
-
-                        <div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div>
-
-                        <div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div><div className='text-white flex items-center justify-end h-fit gap-2 '>
-                            {
-                                COUNTRYY
-                            }
-
-                            {
-                                flag.filter((country) => country.name.common == 'Pakistan').map((country, index) => (
-                                    <img className='w-4 rounded-sm' src={country.flags.svg} alt="" />
-                                ))
-
-                            }
-                        </div>
+    const COUNTRYY = rankIndicator.countries?.map((country, index) => (<span key={index}>{country.country}</span>))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                    </div>
-                    <div className=''>
-                        {rankDifferences > 0 ? (
-                            <h1 className='flex gap-2 text-[#23D30F]'>{up}{rank}</h1>
-                        ) : rankDifferences < 0 ? (
-                            <h1 className='flex gap-2 text-[#CE1126]'>{down}{rank}</h1>
-                        ) : (
-                            <h1 className='flex gap-2 text-[#A3ABB9]'>{equal}{rank}</h1>
-                        )}
-                        <span>
-                            {
-
-                            }
-                        </span>
-                    </div>
-                    <span>
-                        {rankDifferences > 0 ? (
-                            <h1 className='flex text-[#23D30F]'>Positions Up</h1>
-                        ) : rankDifferences < 0 ? (
-                            <h1 className='flex text-[#CE1126]'>Positions Down</h1>
-                        ) : (
-                            <h1 className='flex text-[#A3ABB9]'>No Changes</h1>
-                        )}
-
-                    </span>
-                </div>
-            </div>
-        </section>
+    const ddd = { rankDifferences > 0 ? (
+        <h1 className='flex gap-2 text-[#23D30F]'>{up}{rank}</h1>
+    ) : rankDifferences < 0 ? (
+        <h1 className='flex gap-2 text-[#CE1126]'>{down}{rank}</h1>
+    ) : (
+        <h1 className='flex gap-2 text-[#A3ABB9]'>{equal}{rank}</h1>
     )
+}
+
+
+return (
+    <section className='w-2/6 mx-auto mt-8 text-white  rounded-md'>
+
+        <div className='h-[56px] bg-[#0D1F3D]'><p className='text-[#A7B4CA]'>Difference in rank between years</p></div>
+
+        <div className='bg-[#051124] p-2 '>
+            <div className="flex justify-between ">
+                <select
+                    value={selectedFirstYear}
+                    onChange={handleFirstYearChange}
+                    className="select-none text-center w-5/12 p-x-2.5 text-[#A7B4CA] bg-[#051124] border border-[#172E55] text-2xl shadow-sm outline-none appearance-none rounded-[7px] hover:bg-[#293F64]">
+                    {
+                        years.map((year) => (
+                            <option key={year} value={year}>{year}</option>
+                        ))
+                    }
+                </select>
+
+                <select
+                    value={selectedEndYear}
+                    onChange={handleEndYearChange}
+                    className="select-none text-center w-5/12  p-x-2.5  text-[#A7B4CA] bg-[#051124] border border-[#172E55] text-2xl  shadow-sm outline-none appearance-none  rounded-[7px] hover:bg-[#293F64]">
+                    {
+                        years.map((year) => (
+                            <option key={year} value={year}>{year}</option>
+                        ))
+                    }
+                </select>
+            </div>
+
+            <div className='h-[331px] flex justify-between mt-6 overflow-y-auto content'>
+                <div className='content text-end w-2/5'>
+                    <div className='text-white flex items-center justify-end h-fit gap-2 flex-col '>
+                        {rankIndicator.countries?.map((country, index) => (
+                            <div key={index} className="flex items-center flex-col gap-2">
+                                <span>{country.country}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className='flex flex-col'>
+
+                </div>
+                <span>
+                    {rankDifferences > 0 ? (
+                        <h1 className='flex text-[#23D30F]'>Positions Up</h1>
+                    ) : rankDifferences < 0 ? (
+                        <h1 className='flex text-[#CE1126]'>Positions Down</h1>
+                    ) : (
+                        <h1 className='flex text-[#A3ABB9]'>No Changes</h1>
+                    )}
+
+                </span>
+            </div>
+        </div>
+    </section>
+)
 }
 
 export default RankDifference

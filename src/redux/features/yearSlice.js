@@ -3,6 +3,8 @@ import axios from 'axios';
 
 const initialState = {
     years: [],
+    // selectedYears: null,
+
     isLoading: false,
     error: null
 }
@@ -13,14 +15,18 @@ export const fetchYears = createAsyncThunk('year', async () => {
         return res.data
     } catch (error) {
         console.error(err)
-        throw err 
+        throw err
     }
 })
 
 export const yearSlice = createSlice({
     name: 'year',
     initialState,
-    reducers: {},
+    reducers: {
+        handleFirstYearChange: (state, action) => {
+            state.selectedCountries = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchYears.pending, (state) => {
             state.isLoading = true

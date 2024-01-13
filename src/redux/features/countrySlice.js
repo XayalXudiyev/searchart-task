@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const initialState = {
     countries: [], 
+    selectedCountries:[],
     isLoading: false, 
     error: null,
 }
@@ -21,7 +22,11 @@ export const fetchCountry = createAsyncThunk('country', async () => {
 export const countrySlice = createSlice({
     name: 'country',
     initialState,
-    reducers: {},
+    reducers: {
+        setSelectedCountries: (state, action) => {
+            state.selectedCountries = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchCountry.pending, (state) => {
             state.isLoading = true
@@ -36,5 +41,7 @@ export const countrySlice = createSlice({
         })
     },
 })
+
+export const { setSelectedCountries } = countrySlice.actions; 
 
 export default countrySlice.reducer

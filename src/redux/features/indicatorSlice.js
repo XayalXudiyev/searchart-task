@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const initialState = {
   indicators: [],
+  selectedIndicator: '',
   isLoading: false,
   error: null,
 };
@@ -20,7 +21,11 @@ export const fetchIndicators = createAsyncThunk('indicator', async (selectedSubs
 export const indicatorSlice = createSlice({
   name: 'indicator',
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedIndicator: (state, action) => {
+      state.selectedIndicator = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchIndicators.pending, (state) => {
       state.isLoading = true;
@@ -35,5 +40,7 @@ export const indicatorSlice = createSlice({
     });
   },
 });
+
+export const { setSelectedIndicator } = indicatorSlice.actions; 
 
 export default indicatorSlice.reducer;
