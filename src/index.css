@@ -12,12 +12,26 @@
 }
 
 
-select {
+select  {
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
   /* Firefox */
   -ms-overflow-style: none;
   /* Internet Explorer 11 */
+}
+
+
+ul{
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 11 */
+}
+
+
+ul::-webkit-scrollbar{
+  width: 0;
 }
 
 /* Webkit (Chrome, Safari) */

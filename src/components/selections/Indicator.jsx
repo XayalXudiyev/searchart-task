@@ -6,7 +6,6 @@ import { setSelectedIndicator } from '../../redux/features/indicatorSlice';
 const Indicator = () => {
     const dispatch = useDispatch();
     const selectedSubsector = useSelector((state) => state.subsector.selectedSubsector);
-    // const subsectors = useSelector((state) => state.subsector.subsectors);
 
     useEffect(() => {
         if (selectedSubsector) {
@@ -32,7 +31,6 @@ const Indicator = () => {
                 value={selectedIndicator}
                 onChange={handleIndicatorChange}
                 className="w-full p-2.5 text-[#A7B4CA] bg-[#293F64] border border-[#4A628A]  shadow-sm outline-none appearance-none rounded-[7px]">
-                {/* <option value='#'>Gross Domestic Prod..</option> */}
                 {indicators.map((indicator) => (
                     <option key={indicator} value={indicator}>{indicator}</option>
                 ))}

@@ -3,8 +3,6 @@ import axios from 'axios';
 
 const initialState = {
     years: [],
-    // selectedYears: null,
-
     isLoading: false,
     error: null
 }

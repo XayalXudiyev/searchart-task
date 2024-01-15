@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchYears } from '../../redux/features/yearSlice'
 
 
+
 const RankDifference = () => {
 
     const equal = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M21.375 15C21.375 15.2984 21.2565 15.5845 21.0455 15.7955C20.8345 16.0065 20.5484 16.125 20.25 16.125H3.75C3.45163 16.125 3.16548 16.0065 2.9545 15.7955C2.74353 15.5845 2.625 15.2984 2.625 15C2.625 14.7016 2.74353 14.4155 2.9545 14.2045C3.16548 13.9935 3.45163 13.875 3.75 13.875H20.25C20.5484 13.875 20.8345 13.9935 21.0455 14.2045C21.2565 14.4155 21.375 14.7016 21.375 15ZM3.75 10.125H20.25C20.5484 10.125 20.8345 10.0065 21.0455 9.7955C21.2565 9.58452 21.375 9.29837 21.375 9C21.375 8.70163 21.2565 8.41548 21.0455 8.2045C20.8345 7.99353 20.5484 7.875 20.25 7.875H3.75C3.45163 7.875 3.16548 7.99353 2.9545 8.2045C2.74353 8.41548 2.625 8.70163 2.625 9C2.625 9.29837 2.74353 9.58452 2.9545 9.7955C3.16548 10.0065 3.45163 10.125 3.75 10.125Z" fill="#A3ABB9" /></svg>
@@ -19,17 +20,24 @@ const RankDifference = () => {
     const [selectedFirstYear, setSelectedFirstYear] = useState('');
     const [selectedEndYear, setSelectedEndYear] = useState('');
 
-    // useEffect(() => {
-    //     const fetchFlag = async () => {
-    //         try {
-    //             const res = await axios.get(`https://restcountries.com/v3.1/all?fields=name,flags`);
-    //             setFlag(res.data)
-    //         } catch (error) {
-    //             console.error("Error fetching data:", error);
-    //         }
-    //     };
-    //     fetchFlag();
-    // }, [flag])
+    useEffect(() => {
+        const fetchFlag = async () => {
+            try {
+                const res = await axios.get(`https://restcountries.com/v3.1/all?fields=name,flags`);
+                setFlag(res.data)
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchFlag();
+    }, [flag])
+
+
+    const getFlagUrl = (countryCode) => {
+        const country = flag.find((item) => item.name.common === countryCode);
+        return country ? country.flags.svg : '';
+    };
+
 
     const handleFirstYearChange = (e) => {
         setSelectedFirstYear(e.target.value);
@@ -106,14 +114,14 @@ const RankDifference = () => {
     return (
         <section className='w-2/6 mx-auto mt-8 text-white  rounded-md h'>
 
-            <div className='h-[45px] bg-[#0D1F3D]'><p className='text-[#A7B4CA]'>Difference in rank between years</p></div>
+            <div className='h-[45px] bg-[#0D1F3D]'><p className=' h-full  flex items-center pl-3 font-bold  text-lg text-[#A7B4CA]'>Difference in rank between years</p></div>
 
             <div className='bg-[#051124] p-2 '>
                 <div className="flex justify-between ">
                     <select
                         value={selectedFirstYear}
                         onChange={handleFirstYearChange}
-                        className="select-none text-center w-5/12 p-x-2.5 text-[#A7B4CA] bg-[#051124] border border-[#172E55] text-2xl shadow-sm outline-none appearance-none rounded-[7px] hover:bg-[#293F64]">
+                        className="select-none text-center w-5/12 p-x-2.5 text-[#A7B4CA] bg-[#051124] border border-[#172E55] text-xl shadow-sm outline-none  rounded-[7px] hover:bg-[#293F64]">
                         {
                             years.map((year) => (
                                 <option key={year} value={year}>{year}</option>
@@ -124,7 +132,7 @@ const RankDifference = () => {
                     <select
                         value={selectedEndYear}
                         onChange={handleEndYearChange}
-                        className="select-none text-center w-5/12  p-x-2.5  text-[#A7B4CA] bg-[#051124] border border-[#172E55] text-2xl  shadow-sm outline-none appearance-none  rounded-[7px] hover:bg-[#293F64]">
+                        className="select-none text-center w-5/12  p-x-2.5  text-[#A7B4CA] bg-[#051124] border border-[#172E55] text-xl  shadow-sm outline-none   rounded-[7px] hover:bg-[#293F64]">
                         {
                             years.map((year) => (
                                 <option key={year} value={year}>{year}</option>
@@ -137,11 +145,13 @@ const RankDifference = () => {
                     <div className='content w-full'>
 
                         {rankIndicator.countries?.map((country, index) => (
-                            <div key={index} className="  ">
-                                <div className='flex h-10'>
-                                    <div className='w-2/5 text-end' >
+                            <div key={index} className=" ">
+                                <div className='flex h-10 items-center'>
+                                    <div className='w-2/5 text-end flex items-center gap-3 justify-end ' >
                                         {country.country}
+                                        <img src={getFlagUrl(country.country)} alt={`${country.country} flag`} className="w-5 h-3 rounded-[2px]" />
                                     </div>
+
                                     <div className='w-1/5 flex justify-center ' >
                                         {ddd[index]}
                                     </div>

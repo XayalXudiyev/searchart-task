@@ -2,19 +2,19 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const initialState = {
-    countries: [], 
-    selectedCountries:[],
-    isLoading: false, 
+    countries: [],
+    selectedCountries: [],
+    isLoading: false,
     error: null,
 }
 
 export const fetchCountry = createAsyncThunk('country', async () => {
     try {
         const res = await axios.get("https://searchartback-production-dc78.up.railway.app/api/country/?indicator=Gross%20Domestic%20Product%20billions%20of%20U.S.%20dollars");
-      
+
         return res.data;
     } catch (err) {
-        console.error(err); 
+        console.error(err);
         throw err;
     }
 });
@@ -42,6 +42,6 @@ export const countrySlice = createSlice({
     },
 })
 
-export const { setSelectedCountries } = countrySlice.actions; 
+export const { setSelectedCountries } = countrySlice.actions;
 
 export default countrySlice.reducer
