@@ -25,14 +25,14 @@ const Country = () => {
         dispatch(setSelectedCountries([]));
     }, [dispatch]);
     return (
-        <div className="relative   ">
+        <div className="   ">
             <h1 className='text-[#A7B4CA] my-2'>Country</h1>
             <select
             value={selectedCountries}
             onChange={handleSectorChange}
              multiple 
-            className="select-none h-[155px] p-2.5  text-[#A7B4CA] bg-[#293F64] border border-[#4A628A]  shadow-sm outline-none appearance-none  rounded-[7px]">
-               <option value="" disabled>(All)</option>
+            className="select-none  p-2.5  text-[#A7B4CA] bg-[#293F64] border border-[#4A628A]  shadow-sm outline-none appearance-none overflow-y-auto h-[7rem] rounded-[7px]">
+               <option value="" disabled></option>
                 {
                     countries.map((country) => (
                         <option key={country} value={country}>{country}</option>

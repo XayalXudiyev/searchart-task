@@ -73,77 +73,96 @@ const RankDifference = () => {
 
 
     const rankDifferences = rankIndicator.countries?.map((country) => country.rank_difference)
+    console.log(rankDifferences)
     const rank = rankIndicator.countries?.map((country, index) => (<span key={index}>{country.rank_difference}</span>))
     const COUNTRYY = rankIndicator.countries?.map((country, index) => (<span key={index}>{country.country}</span>))
 
 
-    const ddd = { rankDifferences > 0 ? (
-        <h1 className='flex gap-2 text-[#23D30F]'>{up}{rank}</h1>
-    ) : rankDifferences < 0 ? (
-        <h1 className='flex gap-2 text-[#CE1126]'>{down}{rank}</h1>
-    ) : (
-        <h1 className='flex gap-2 text-[#A3ABB9]'>{equal}{rank}</h1>
-    )
-}
+    const ddd = rankDifferences?.map((difference, index) => {
+        const indicator = difference > 0 ? up : difference < 0 ? down : equal;
+        return (
+            <h1 key={index} className={`flex gap-2 text-${difference > 0 ? '#23D30F' : difference < 0 ? '#CE1126' : '#A3ABB9'}`}>
+                {indicator}{difference}
+            </h1>
+        );
+    });
 
 
-return (
-    <section className='w-2/6 mx-auto mt-8 text-white  rounded-md'>
-
-        <div className='h-[56px] bg-[#0D1F3D]'><p className='text-[#A7B4CA]'>Difference in rank between years</p></div>
-
-        <div className='bg-[#051124] p-2 '>
-            <div className="flex justify-between ">
-                <select
-                    value={selectedFirstYear}
-                    onChange={handleFirstYearChange}
-                    className="select-none text-center w-5/12 p-x-2.5 text-[#A7B4CA] bg-[#051124] border border-[#172E55] text-2xl shadow-sm outline-none appearance-none rounded-[7px] hover:bg-[#293F64]">
-                    {
-                        years.map((year) => (
-                            <option key={year} value={year}>{year}</option>
-                        ))
-                    }
-                </select>
-
-                <select
-                    value={selectedEndYear}
-                    onChange={handleEndYearChange}
-                    className="select-none text-center w-5/12  p-x-2.5  text-[#A7B4CA] bg-[#051124] border border-[#172E55] text-2xl  shadow-sm outline-none appearance-none  rounded-[7px] hover:bg-[#293F64]">
-                    {
-                        years.map((year) => (
-                            <option key={year} value={year}>{year}</option>
-                        ))
-                    }
-                </select>
+    const positionMessage = rankDifferences && rankDifferences.length > 0
+        ? rankDifferences.map((diff, index) => (
+            <div key={index} className=''>
+                {diff > 0 ? (
+                    <h1 className=' text-[#23D30F]'>Position Up</h1>
+                ) : diff < 0 ? (
+                    <h1 className=' text-[#CE1126]'>Position Down</h1>
+                ) : (
+                    <h1 className=' text-[#A3ABB9]'>No Changes</h1>
+                )}
             </div>
+        ))
+        : null;
 
-            <div className='h-[331px] flex justify-between mt-6 overflow-y-auto content'>
-                <div className='content text-end w-2/5'>
-                    <div className='text-white flex items-center justify-end h-fit gap-2 flex-col '>
+
+    return (
+        <section className='w-2/6 mx-auto mt-8 text-white  rounded-md h'>
+
+            <div className='h-[45px] bg-[#0D1F3D]'><p className='text-[#A7B4CA]'>Difference in rank between years</p></div>
+
+            <div className='bg-[#051124] p-2 '>
+                <div className="flex justify-between ">
+                    <select
+                        value={selectedFirstYear}
+                        onChange={handleFirstYearChange}
+                        className="select-none text-center w-5/12 p-x-2.5 text-[#A7B4CA] bg-[#051124] border border-[#172E55] text-2xl shadow-sm outline-none appearance-none rounded-[7px] hover:bg-[#293F64]">
+                        {
+                            years.map((year) => (
+                                <option key={year} value={year}>{year}</option>
+                            ))
+                        }
+                    </select>
+
+                    <select
+                        value={selectedEndYear}
+                        onChange={handleEndYearChange}
+                        className="select-none text-center w-5/12  p-x-2.5  text-[#A7B4CA] bg-[#051124] border border-[#172E55] text-2xl  shadow-sm outline-none appearance-none  rounded-[7px] hover:bg-[#293F64]">
+                        {
+                            years.map((year) => (
+                                <option key={year} value={year}>{year}</option>
+                            ))
+                        }
+                    </select>
+                </div>
+
+                <div className='h-[331px] flex justify-between mt-6 overflow-y-auto content w-[28rem]'>
+                    <div className='content w-full'>
+
                         {rankIndicator.countries?.map((country, index) => (
-                            <div key={index} className="flex items-center flex-col gap-2">
-                                <span>{country.country}</span>
+                            <div key={index} className="  ">
+                                <div className='flex h-10'>
+                                    <div className='w-2/5 text-end' >
+                                        {country.country}
+                                    </div>
+                                    <div className='w-1/5 flex justify-center ' >
+                                        {ddd[index]}
+                                    </div>
+                                    <div className='w-2/5 text-center'>
+                                        {positionMessage[index]}
+                                    </div>
+                                </div>
                             </div>
                         ))}
                     </div>
-                </div>
-                <div className='flex flex-col'>
+                    <div className='flex flex-col'>
+
+                    </div>
+
+
 
                 </div>
-                <span>
-                    {rankDifferences > 0 ? (
-                        <h1 className='flex text-[#23D30F]'>Positions Up</h1>
-                    ) : rankDifferences < 0 ? (
-                        <h1 className='flex text-[#CE1126]'>Positions Down</h1>
-                    ) : (
-                        <h1 className='flex text-[#A3ABB9]'>No Changes</h1>
-                    )}
 
-                </span>
             </div>
-        </div>
-    </section>
-)
+        </section>
+    )
 }
 
 export default RankDifference
