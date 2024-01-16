@@ -82,8 +82,8 @@ const RankDifference = () => {
 
     const rankDifferences = rankIndicator.countries?.map((country) => country.rank_difference)
     console.log(rankDifferences)
-    const rank = rankIndicator.countries?.map((country, index) => (<span key={index}>{country.rank_difference}</span>))
-    const COUNTRYY = rankIndicator.countries?.map((country, index) => (<span key={index}>{country.country}</span>))
+    // const rank = rankIndicator.countries?.map((country, index) => (<span key={index}>{country.rank_difference}</span>))
+    // const COUNTRYY = rankIndicator.countries?.map((country, index) => (<span key={index}>{country.country}</span>))
 
 
     const ddd = rankDifferences?.map((difference, index) => {

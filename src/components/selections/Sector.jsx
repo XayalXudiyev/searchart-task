@@ -37,8 +37,8 @@ const Sector = () => {
               <li
                 key={sector}
                 onClick={() => handleSectorClick(sector)}
-                className={`flex items-center gap-1 justify-between p-1 w-[198px] cursor-pointer ${
-                  selectedSector === sector ? 'bg-[#4A628A] text-[#293F64]' : ''
+                className={`flex items-center gap-1 justify-between p-1 w-[198px] cursor-pointer hover:bg-[#4A628A] ${
+                  selectedSector === sector ? 'bg-[#4A628A] text-[#A7B4CA]' : ''
                 }`}
               >
                 {sector}

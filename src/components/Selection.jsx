@@ -14,7 +14,7 @@ const Selection = () => {
       <Sector />
       <Subsector />
       <Indicator />
-      {/* <Rank /> */}
+      <Rank />
     </div>
   )
 }

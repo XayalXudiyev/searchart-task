@@ -38,7 +38,7 @@ const Year = () => {
               <li
                 key={year}
                 onClick={() => handleYearClick(year)}
-                className={`flex items-center gap-1 justify-between p-1 w-[100px] cursor-pointer ${
+                className={`flex items-center gap-1 justify-between p-1 w-[100px] cursor-pointer hover:bg-[#4A628A] ${
                   selectedYear === year ? 'bg-[#4A628A] text-[#293F64]' : ''
                 }`}
               >
